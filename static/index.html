@@ -1,23 +1,60 @@
-<!doctype html>
-<title>tty.js</title>
-<link rel="stylesheet" href="/style.css">
-<link rel="stylesheet" href="/user.css">
-
-<h1>tty.js</h1>
-
-<div id="help">
-  <p>Click the titlebar to drag.</p>
-  <p>Double-click titlebar to maximize.</p>
-  <p>Click the lower-right corner to resize.</p>
-  <p>Click the tilde to open a new tab.</p>
-  <p>Click the tilde with a modifier to close the window.</p>
-</div>
-
-<button id="open">Open Terminal</button>
-<button id="lights">Light Switch</button>
-
+<html>
+<head>
+<style>
+body {
+	padding:0;
+	margin:0;
+}
+textarea {
+	background-color: #000022;
+	color: gray;
+	width: 100%;
+	height: 70%;
+	border: none;
+	font-family: monospace;
+	font-size: 12pt;
+}
+iframe {
+	width: 100%;
+	height: 30%;
+	border: none;
+}
+button {
+	position: absolute;
+	right: 15px;
+	top: 15px;
+}
+</style>
+</head>
+<body>
+<button id="save">Save Code</button>
+<textarea id="code">public class Main {
+	public static void main(String args[]) {
+		System.out.println("Hello World!!!");
+	}
+}
+</textarea>
+<iframe src="console.html"></iframe>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/term.js"></script>
-<script src="/options.js"></script>
-<script src="/tty.js"></script>
-<script src="/user.js"></script>
+<script>
+function on(el, type, handler, capture) {
+  el.addEventListener(type, handler, capture || false);
+}
+
+function off(el, type, handler, capture) {
+  el.removeEventListener(type, handler, capture || false);
+}
+
+var socket = io.connect();
+
+var save = document.getElementById('save');
+var code = document.getElementById('code');
+
+if (save) {
+  on(save, 'click', function() {
+	socket.emit('save', {code: code.value});
+  });
+}
+</script>
+</body>
+</html>

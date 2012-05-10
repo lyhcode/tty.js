@@ -9,6 +9,8 @@
  * Elements
  */
 
+var __id;
+
 var document = this.document
   , window = this
   , root
@@ -60,9 +62,18 @@ function open() {
     });
   }
 
+  var run = document.getElementById('run');
+  if (run) {
+    on(run, 'click', function() {
+	  console.log(terms);
+	  socket.emit('run', __id, { my: 'data' });
+    });
+  }
+
   socket.on('connect', function() {
     reset();
-    new Window(socket);
+    var win = new Window(socket);
+	win.maximize();
   });
 
   socket.on('data', function(id, data) {
@@ -475,6 +486,8 @@ function Tab(win, socket) {
     if (err) return self._destroy();
     self.pty = data.pty;
     self.id = data.id;
+    __id = data.id;
+	//console.log(data.id);
     terms[self.id] = self;
     self.setProcessName(data.process);
   });
