@@ -73,7 +73,7 @@ function open() {
   socket.on('connect', function() {
     reset();
     var win = new Window(socket);
-	win.maximize();
+	//win.maximize();
   });
 
   socket.on('data', function(id, data) {
